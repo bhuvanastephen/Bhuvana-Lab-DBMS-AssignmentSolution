@@ -1,0 +1,66 @@
+Create Database if not exists `order-directory` ;
+use `order-directory`;
+
+create table if not exists `supplier`(
+`SUPP_ID` int primary key,
+`SUPP_NAME` varchar(50) ,
+`SUPP_CITY` varchar(50),
+`SUPP_PHONE` varchar(10)
+);
+
+CREATE TABLE IF NOT EXISTS `customer` (
+  `CUS_ID` INT NOT NULL,
+  `CUS_NAME` VARCHAR(20) NULL DEFAULT NULL,
+  `CUS_PHONE` VARCHAR(10),
+  `CUS_CITY` varchar(30) ,
+  `CUS_GENDER` CHAR,
+  PRIMARY KEY (`CUS_ID`));
+
+CREATE TABLE IF NOT EXISTS `category` (
+  `CAT_ID` INT NOT NULL,
+  `CAT_NAME` VARCHAR(20) NULL DEFAULT NULL,
+ 
+  PRIMARY KEY (`CAT_ID`)
+  );
+
+  CREATE TABLE IF NOT EXISTS `product` (
+  `PRO_ID` INT NOT NULL,
+  `PRO_NAME` VARCHAR(20) NULL DEFAULT NULL,
+  `PRO_DESC` VARCHAR(60) NULL DEFAULT NULL,
+  `CAT_ID` INT NOT NULL,
+  PRIMARY KEY (`PRO_ID`),
+  FOREIGN KEY (`CAT_ID`) REFERENCES category (`CAT_ID`)
+  
+  );
+
+ CREATE TABLE IF NOT EXISTS `product_details` (
+  `PROD_ID` INT NOT NULL,
+  `PRO_ID` INT NOT NULL,
+  `SUPP_ID` INT NOT NULL,
+  `PROD_PRICE` INT NOT NULL,
+  PRIMARY KEY (`PROD_ID`),
+  FOREIGN KEY (`PRO_ID`) REFERENCES product (`PRO_ID`),
+  FOREIGN KEY (`SUPP_ID`) REFERENCES supplier (`SUPP_ID`)
+  
+  );
+
+CREATE TABLE IF NOT EXISTS `order` (
+  `ORD_ID` INT NOT NULL,
+  `ORD_AMOUNT` INT NOT NULL,
+  `ORD_DATE` DATE,
+  `CUS_ID` INT NOT NULL,
+  `PROD_ID` INT NOT NULL,
+  PRIMARY KEY (`ORD_ID`),
+  FOREIGN KEY (`CUS_ID`) REFERENCES customer (`CUS_ID`),
+  FOREIGN KEY (`PROD_ID`) REFERENCES product_details (`PROD_ID`)
+  );
+
+CREATE TABLE IF NOT EXISTS `rating` (
+  `RAT_ID` INT NOT NULL,
+  `CUS_ID` INT NOT NULL,
+  `SUPP_ID` INT NOT NULL,
+  `RAT_RATSTARS` INT NOT NULL,
+  PRIMARY KEY (`RAT_ID`),
+  FOREIGN KEY (`SUPP_ID`) REFERENCES supplier (`SUPP_ID`),
+  FOREIGN KEY (`CUS_ID`) REFERENCES customer (`CUS_ID`)
+  );
